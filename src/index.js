@@ -71,6 +71,7 @@ class StitchApp extends React.Component {
 }
 
 ReactDOM.render(
-  <StitchApp appId="<your_app_id>" />,
+  // BJB Set AppID
+  <StitchApp appId="environmentaljournal-evvhl" />,
   document.getElementById("root")
 );

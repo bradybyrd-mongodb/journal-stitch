@@ -22,7 +22,7 @@ class Journal extends Component {
   constructor(props) {
     super(props);
     const { mongodb } = this.props;
-    this.entries = mongodb.db("<your_database>").collection("<your_collection>");
+    this.entries = mongodb.db("water_samples").collection("journal");
     this.state = {
       entries: []
     };
@@ -30,7 +30,8 @@ class Journal extends Component {
 
   async componentDidMount() {
       // TODO: Fetch existing journal entries
-      const entries = [];
+      // const entries = [];
+      const entries = await this.entries.find({}).asArray();
 
       // Add entries to Component State
       this.setState({ entries });
@@ -48,7 +49,8 @@ class Journal extends Component {
     };
 
     // TODO: Add newEntry to MongoDB here
-
+    const result = await this.entries.insertOne(newEntry);
+    newEntry._id = result.insertedId;
     // Add newEntry to Component State
     this.setState(({ entries }) => ({
       entries: [...entries, newEntry]
@@ -57,7 +59,7 @@ class Journal extends Component {
 
   removeEntry = async entryId => {
     // TODO: Delete the entry from MongoDB
-
+    await this.entries.deleteOne({ _id: entryId });
     // Remove Entry from Component State
     this.setState(({ entries }) => ({
       entries: entries.filter(entry => entry._id !== entryId)
@@ -66,7 +68,10 @@ class Journal extends Component {
 
   updateEntry = async (entryId, newBody) => {
     // TODO: Update the Entry body in MongoDB
-
+    await this.entries.updateOne(
+      { _id: entryId },
+      { $set: { body : newBody}}
+    );
     // Update the Entry body and disable editing in Component State
     this.setState(({ entries }) => ({
       entries: entries.map(
@@ -80,7 +85,10 @@ class Journal extends Component {
 
   shareEntry = async (entryId, email) => {
     // TODO: Share Entry to the provided email by setting it in the sharedWith array
-
+    await this.entries.updateOne(
+      { _id: entryId },
+      { $push: { sharedWith: email } }
+    );
     // Add the provided email to the Entry sharedWith array in Component State
     this.setState(({ entries }) => ({
       entries: entries.map(
@@ -94,7 +102,11 @@ class Journal extends Component {
 
   unshareEntry = async (entryId, email) => {
     // TODO: Remove the provided email from the Entry sharedWith array
-
+    await this.entries.updateOne(
+      { _id: entryId },
+      { $pull: { sharedWith: email } },
+      { multi: true }
+    );
     // Remove the provided email from the Entry sharedWith array in Component State
     this.setState(({ entries }) => ({
       entries: entries.map(
