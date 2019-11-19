@@ -7,13 +7,14 @@ water_samples.journal collection
 AppID: environmentaljournal-evvhl
 
 NPM-install: npm install --save mongodb-stitch-browser-sdk@"^4.6.0"
-brady.byrd@mongodb.com/***REMOVED***
-dhananjay.ghevde@mongodb.com/***REMOVED***
-libertystitch1@gmail.com/***REMOVED***
+brady.byrd@mongodb.com/xxxxxxx
+dhananjay.ghevde@mongodb.com/xxxxxx
+libertystitch1@gmail.com/xxxxxxx
 
 in src/components/Journal/index.js
       this.entries = mongodb.db("water_samples").collection("journal");
-      
+
+mongo "mongodb+srv://m10basicagain-vmwqj.mongodb.net/test"  --username xxxxxxx      
 
 #--- original stitch project from NHTT -----#
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
